@@ -1,50 +1,51 @@
-const path = require("path");
-const express = require("express");
-const hbs = require("hbs");
-const geoCode = require("./utils/geocode");
-const forecast = require("./utils/forecast");
+const path = require('path');
+const express = require('express');
+const hbs = require('hbs');
+const geoCode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 // Define paths for Express config
-const publicDirectoryPath = path.join(__dirname, "../public");
-const viewsPath = path.join(__dirname, "../templates/views");
-const partialsPath = path.join(__dirname, "../templates/partials");
+const publicDirectoryPath = path.join(__dirname, '../public');
+const viewsPath = path.join(__dirname, '../templates/views');
+const partialsPath = path.join(__dirname, '../templates/partials');
 
 // Setup handlebars engine and views location
-app.set("view engine", "hbs");
-app.set("views", viewsPath);
+app.set('view engine', 'hbs');
+app.set('views', viewsPath);
 hbs.registerPartials(partialsPath);
 
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath)); // customise server
 
-app.get("", (req, res) => {
-  res.render("index", {
-    title: "Weather",
-    name: "Matiur Rahman",
+app.get('', (req, res) => {
+  res.render('index', {
+    title: 'Weather',
+    name: 'Matiur Rahman',
   });
 });
 
-app.get("/about", (req, res) => {
-  res.render("about", {
-    title: "About me",
-    name: "Matiur Rahman",
+app.get('/about', (req, res) => {
+  res.render('about', {
+    title: 'About me',
+    name: 'Matiur Rahman',
   });
 });
 
-app.get("/help", (req, res) => {
-  res.render("help", {
-    title: "Help",
-    name: "Matiur Rahman",
-    text: " Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut, officia! ",
+app.get('/help', (req, res) => {
+  res.render('help', {
+    title: 'Help',
+    name: 'Matiur Rahman',
+    text: ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut, officia! ',
   });
 });
 
-app.get("/weather", (req, res) => {
+app.get('/weather', (req, res) => {
   if (!req.query.address) {
     return res.send({
-      error: "You must provide an address",
+      error: 'You must provide an address',
     });
   }
 
@@ -71,10 +72,10 @@ app.get("/weather", (req, res) => {
   });
 });
 
-app.get("/products", (req, res) => {
+app.get('/products', (req, res) => {
   if (!req.query.search) {
     return res.send({
-      error: "You must provide a search term",
+      error: 'You must provide a search term',
     });
   }
 
@@ -84,26 +85,22 @@ app.get("/products", (req, res) => {
   });
 });
 
-app.get("/help/*", (req, res) => {
-  res.render("404", {
-    title: "404",
-    name: "Matiur Rahman",
-    errormessage: "Help article not found",
+app.get('/help/*', (req, res) => {
+  res.render('404', {
+    title: '404',
+    name: 'Matiur Rahman',
+    errormessage: 'Help article not found',
   });
 });
 
-app.get("*", (req, res) => {
-  res.render("404", {
-    title: "404",
-    name: "Matiur Rahman",
-    errormessage: "Page not found.",
+app.get('*', (req, res) => {
+  res.render('404', {
+    title: '404',
+    name: 'Matiur Rahman',
+    errormessage: 'Page not found.',
   });
 });
 
-app.listen(3000, () => {
-  console.log("Server is up on port 3000.");
+app.listen(port, () => {
+  console.log(`Server is up on port ${port}.`);
 });
-
-// app.get('/about', (req, res) => {
-//   res.send('<h1>About page </h1>');
-// });
